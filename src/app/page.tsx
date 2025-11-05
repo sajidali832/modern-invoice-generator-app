@@ -34,6 +34,7 @@ export default function Home() {
       clone.style.left = '-9999px';
       clone.style.top = '0';
       clone.style.width = element.offsetWidth + 'px';
+      clone.style.backgroundColor = '#ffffff';
       document.body.appendChild(clone);
 
       // Helper function to convert oklch/color values to rgb
@@ -74,40 +75,91 @@ export default function Home() {
           'outlineColor',
           'textDecorationColor',
           'caretColor',
-          'columnRuleColor'
-        ];
+          'columnRuleColor',
+          // SVG-related
+          'fill',
+          'stroke',
+        ] as const;
 
         // Convert each color property
-        colorProperties.forEach(prop => {
-          const value = computedStyle.getPropertyValue(prop);
+        colorProperties.forEach((prop) => {
+          // @ts-expect-error - indexing style props dynamically
+          const value = computedStyle.getPropertyValue(prop as any);
           if (value && value !== 'rgba(0, 0, 0, 0)' && value !== 'transparent') {
             const rgbValue = convertColorToRGB(value);
             htmlEl.style.setProperty(prop, rgbValue, 'important');
           }
         });
 
-        // Remove CSS custom properties that might contain oklch
+        // Neutralize properties that may include gradients/shadows using oklch/var()
+        const bgImage = computedStyle.backgroundImage;
+        if (bgImage && bgImage !== 'none') {
+          // If it contains any unsupported tokens, drop it
+          const lower = bgImage.toLowerCase();
+          if (lower.includes('gradient') || lower.includes('oklch') || lower.includes('color(') || lower.includes('var(') || lower.includes('oklab')) {
+            htmlEl.style.setProperty('background-image', 'none', 'important');
+          }
+        }
+
+        const boxShadow = computedStyle.boxShadow;
+        if (boxShadow && boxShadow !== 'none') {
+          const lower = boxShadow.toLowerCase();
+          if (lower.includes('oklch') || lower.includes('color(') || lower.includes('var(')) {
+            htmlEl.style.setProperty('box-shadow', 'none', 'important');
+          }
+        }
+
+        const textShadow = computedStyle.textShadow;
+        if (textShadow && textShadow !== 'none') {
+          const lower = textShadow.toLowerCase();
+          if (lower.includes('oklch') || lower.includes('color(') || lower.includes('var(')) {
+            htmlEl.style.setProperty('text-shadow', 'none', 'important');
+          }
+        }
+
+        const filterVal = computedStyle.filter;
+        if (filterVal && filterVal !== 'none') {
+          htmlEl.style.setProperty('filter', 'none', 'important');
+        }
+        const backdropFilterVal = (computedStyle as any).backdropFilter as string | undefined;
+        if (backdropFilterVal && backdropFilterVal !== 'none') {
+          // @ts-ignore backdrop-filter vendor differences
+          htmlEl.style.setProperty('backdrop-filter', 'none', 'important');
+        }
+
+        // Ensure a solid background is present to avoid transparent areas
+        const bgColor = computedStyle.backgroundColor;
+        if (!bgColor || bgColor === 'rgba(0, 0, 0, 0)' || bgColor === 'transparent') {
+          htmlEl.style.setProperty('background-color', '#ffffff', 'important');
+        }
+
+        // Remove CSS custom properties that might contain oklch (tailwind --tw-* etc.)
+        // We can't enumerate CSS variables from computed styles reliably, so remove common ones and neutralize known groups
         const cssVars = [
           '--background', '--foreground', '--border', '--card', '--card-foreground',
           '--popover', '--popover-foreground', '--primary', '--primary-foreground',
           '--secondary', '--secondary-foreground', '--muted', '--muted-foreground',
           '--accent', '--accent-foreground', '--destructive', '--destructive-foreground',
-          '--ring', '--radius', '--input'
+          '--ring', '--radius', '--input', '--tw-gradient-from', '--tw-gradient-to',
+          '--tw-gradient-stops', '--tw-ring-color', '--tw-shadow-color', '--tw-shadow',
         ];
-        
-        cssVars.forEach(varName => {
+        cssVars.forEach((varName) => {
           htmlEl.style.removeProperty(varName);
+          // Also neutralize common gradient vars
+          if (varName.startsWith('--tw-gradient')) {
+            htmlEl.style.setProperty(varName, 'initial', 'important');
+          }
         });
 
         // Process all child elements
-        Array.from(el.children).forEach(child => processElement(child));
+        Array.from(el.children).forEach((child) => processElement(child));
       };
 
       // Process the clone
       processElement(clone);
 
       // Wait for styles to be applied
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       const canvas = await html2canvas(clone, {
         scale: 2,
@@ -119,7 +171,7 @@ export default function Home() {
         windowHeight: element.scrollHeight,
         ignoreElements: (element) => {
           return element.classList?.contains('no-pdf');
-        }
+        },
       });
 
       // Remove the clone
