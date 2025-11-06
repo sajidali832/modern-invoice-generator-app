@@ -7,6 +7,9 @@ import Script from "next/script";
 export const metadata: Metadata = {
   title: "SmartInvoice - Professional Invoice Generator",
   description: "Create, customize, and download professional invoices with multiple templates and currencies",
+  other: {
+    'monetag': 'c861cd9d38303fd82eb2a0c82ffe1450',
+  },
 };
 
 export default function RootLayout({
@@ -16,6 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="monetag" content="c861cd9d38303fd82eb2a0c82ffe1450" />
+      </head>
       <body className="antialiased">
         <ErrorReporter />
         <Script
