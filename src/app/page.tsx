@@ -210,20 +210,33 @@ export default function Home() {
   return (
     <InvoiceProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        {/* SEO-friendly hidden content for crawlers */}
+        <div className="sr-only" aria-hidden="true">
+          <h1>SmartInvoice - Free Professional Invoice Generator</h1>
+          <h2>Create Professional Invoices Online</h2>
+          <p>Generate custom invoices with multi-currency support, professional templates, and instant PDF download. Perfect for freelancers, small businesses, and entrepreneurs.</p>
+        </div>
+
         <InvoiceNavbar
           onDownload={() => setShowDownloadModal(true)}
           onPrint={handlePrint}
         />
 
-        <div className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)]">
-          <div className="w-full lg:w-1/2 overflow-hidden">
+        <main className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)]" role="main">
+          <section 
+            className="w-full lg:w-1/2 overflow-hidden"
+            aria-label="Invoice form - Enter your invoice details"
+          >
             <InvoiceForm />
-          </div>
+          </section>
 
-          <div className="w-full lg:w-1/2 overflow-hidden border-l border-border/50">
+          <section 
+            className="w-full lg:w-1/2 overflow-hidden border-l border-border/50"
+            aria-label="Invoice preview - Real-time preview of your invoice"
+          >
             <InvoicePreview />
-          </div>
-        </div>
+          </section>
+        </main>
 
         <AboutSection />
 
@@ -242,7 +255,7 @@ export default function Home() {
         />
 
         {isGeneratingPDF && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" role="status" aria-live="polite">
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-2xl flex flex-col items-center gap-4">
               <Loader2 className="w-12 h-12 animate-spin text-blue-600" />
               <p className="text-lg font-semibold text-foreground">Generating PDF...</p>
@@ -251,18 +264,18 @@ export default function Home() {
           </div>
         )}
 
-        <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-border py-8 px-6 text-center print:hidden">
+        <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-border py-8 px-6 text-center print:hidden" role="contentinfo">
           <div className="max-w-7xl mx-auto space-y-4">
             <p className="text-sm text-muted-foreground">
               Made with love by SmartInvoice
             </p>
-            <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
+            <nav className="flex items-center justify-center gap-6 text-sm text-muted-foreground" aria-label="Footer navigation">
               <a href="#about" className="hover:text-foreground transition-colors">About</a>
-              <span>•</span>
+              <span aria-hidden="true">•</span>
               <a href="#privacy" className="hover:text-foreground transition-colors">Privacy Policy</a>
-              <span>•</span>
+              <span aria-hidden="true">•</span>
               <a href="#contact" className="hover:text-foreground transition-colors">Contact</a>
-            </div>
+            </nav>
             <div className="opacity-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
               <script dangerouslySetInnerHTML={{__html: `(function(s){s.dataset.zone='10148264',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`}} />
             </div>
