@@ -48,6 +48,21 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://smartinvoice.com",
   },
+  icons: {
+    icon: [
+      { url: '/icon.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' }
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '512x512', type: 'image/png' }
+    ],
+    other: [
+      {
+        rel: 'mask-icon',
+        url: '/icon.png',
+      },
+    ],
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -57,9 +72,9 @@ export const metadata: Metadata = {
     description: "Create professional invoices online for free. Multi-currency support, 5+ templates, instant PDF download. No signup required.",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/icon.png",
+        width: 512,
+        height: 512,
         alt: "SmartInvoice - Professional Invoice Generator",
       },
     ],
@@ -68,7 +83,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SmartInvoice - Free Professional Invoice Generator",
     description: "Create professional invoices online for free. Multi-currency support, 5+ templates, instant PDF download.",
-    images: ["/og-image.png"],
+    images: ["/icon.png"],
     creator: "@smartinvoice",
   },
   verification: {
