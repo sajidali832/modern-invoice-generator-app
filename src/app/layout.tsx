@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   other: {
     'monetag': 'c861cd9d38303fd82eb2a0c82ffe1450',
   },
+  verification: {
+    google: 'uH5P7tslZa0wHKJFlk7nKBDqU0KDdv1g304h486Z1Nk',
+  },
 };
 
 export default function RootLayout({
