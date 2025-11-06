@@ -38,7 +38,7 @@ export function AdPlacement({
           minHeight: '90px',
           ...style
         }}
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" // Replace with your Google AdSense client ID
+        data-ad-client="ca-pub-9500746504684772"
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive="true"
