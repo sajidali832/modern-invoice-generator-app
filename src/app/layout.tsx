@@ -21,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="monetag" content="c861cd9d38303fd82eb2a0c82ffe1450" />
+        <script src="https://fpyf8.com/88/tag.min.js" data-zone="183178" async data-cfasync="false"></script>
       </head>
       <body className="antialiased">
         <ErrorReporter />
